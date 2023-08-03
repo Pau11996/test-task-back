@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./
+    command: python manage.py run --reload --host 0.0.0.0
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 5000:5000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db_postgres
+  db_postgres:
+    image: postgres:14
+    container_name: db_postgres
+    env_file:
+      - .env.dev
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+volumes:
+  postgres_data:
